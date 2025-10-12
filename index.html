@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EstudoFlow</title>
+  <style>
+    /* ===== RESET E ESTILO BASE ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #f5f5f5; color: #333; }
+    h1, h2, h3 { margin-bottom: 10px; }
+    button { cursor: pointer; }
+    input, select { padding: 6px; margin: 5px 0; width: 100%; }
+
+    /* ===== HEADER ===== */
+    header { background: #6c5ce7; color: white; padding: 15px; text-align: center; }
+
+    /* ===== CONTAINER PRINCIPAL ===== */
+    .container { max-width: 1200px; margin: 20px auto; padding: 10px; }
+
+    /* ===== FORMULÁRIO DE CADASTRO ===== */
+    #cadastro, #main-content { display: none; }
+    .form-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); width: 350px; margin: 50px auto; }
+    .form-card input, .form-card select { margin-bottom: 15px; }
+
+    /* ===== MENU ===== */
+    nav { display: flex; justify-content: space-around; background: #fff; padding: 10px 0; box-shadow: 0 3px 10px rgba(0,0,0,0.05); margin-bottom: 20px; border-radius: 10px; }
+    nav button { background: none; border: none; font-size: 16px; padding: 8px 15px; border-radius: 8px; transition: 0.3s; }
+    nav button:hover { background: #dfe6e9; }
+
+    /* ===== SEÇÕES ===== */
+    section { display: none; }
+    section.active { display: block; }
+
+    /* ===== BLOCO DE ESTUDOS ===== */
+    .study-blocks { display: flex; gap: 20px; flex-wrap: wrap; }
+    .study-block { background: #fff; padding: 20px; border-radius: 12px; flex: 1 1 200px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); text-align: center; }
+
+    /* ===== BIBLIOTECA ===== */
+    .library { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 15px; }
+    .library-card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+    /* ===== PLANO DE ESTUDOS ===== */
+    .plan { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
+    .progress-bar { background: #dfe6e9; border-radius: 10px; overflow: hidden; height: 20px; margin-top: 10px; }
+    .progress { height: 100%; background: #6c5ce7; width: 0%; text-align: center; color: white; font-size: 12px; }
+
+    /* ===== CALENDÁRIO ===== */
+    .calendar { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .day { background: #fff; padding: 10px; border-radius: 6px; flex: 1 0 14%; text-align: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .day.selected { background: #6c5ce7; color: white; }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>EstudoFlow</h1>
+  <p>Aprenda no seu ritmo, conquiste no seu tempo</p>
+</header>
+
+<!-- FORMULÁRIO DE CADASTRO -->
+<div id="cadastro" class="form-card">
+  <h2>Cadastro de Aluno</h2>
+  <input type="text" id="nome" placeholder="Nome">
+  <input type="number" id="idade" placeholder="Idade">
+  <select id="ano">
+    <option value="">Ano escolar</option>
+    <option value="Ensino Médio">Ensino Médio</option>
+    <option value="Pré-vestibular">Pré-vestibular</option>
+    <option value="Outros">Outros</option>
+  </select>
+  <select id="objetivo">
+    <option value="">Objetivo de estudo</option>
+    <option value="ENEM">ENEM</option>
+    <option value="Vestibulares">Vestibulares</option>
+    <option value="Concursos">Concursos</option>
+  </select>
+  <select id="preferencia">
+    <option value="">Preferência de aprendizado</option>
+    <option value="Leitura">Leitura</option>
+    <option value="Exercícios">Exercícios</option>
+    <option value="Vídeos">Vídeos</option>
+  </select>
+  <button onclick="cadastrarAluno()">Cadastrar</button>
+</div>
+
+<!-- CONTEÚDO PRINCIPAL -->
+<div id="main-content" class="container">
+
+  <!-- MENU -->
+  <nav>
+    <button onclick="abrirSecao('inicio')">Início</button>
+    <button onclick="abrirSecao('planos')">Plano de Estudos</button>
+    <button onclick="abrirSecao('desempenho')">Desempenho</button>
+    <button onclick="abrirSecao('biblioteca')">Biblioteca</button>
+    <button onclick="abrirSecao('comunidade')">Comunidade</button>
+  </nav>
+
+  <!-- INÍCIO -->
+  <section id="inicio" class="active">
+    <h2>O que você deseja estudar hoje?</h2>
+    <div class="study-blocks">
+      <div class="study-block">ENEM</div>
+      <div class="study-block">Vestibulares</div>
+      <div class="study-block">Prova da Escola</div>
+      <div class="study-block">Revisão Rápida</div>
+    </div>
+  </section>
+
+  <!-- PLANOS DE ESTUDO -->
+  <section id="planos">
+    <h2>Meu Plano de Estudos</h2>
+    <div class="plan">
+      <h3>Horas de Estudo: <span id="horas-estudo">0</span>h</h3>
+      <h3>Meta Semanal:</h3>
+      <div class="progress-bar">
+        <div class="progress" id="progress">0%</div>
+      </div>
+    </div>
+    <h3>Mini Calendário (Clique para marcar datas de prova)</h3>
+    <div class="calendar" id="calendar"></div>
+  </section>
+
+  <!-- DESEMPENHO -->
+  <section id="desempenho">
+    <h2>Meu Desempenho</h2>
+    <p>Aqui você verá o progresso semanal, horas estudadas e metas cumpridas.</p>
+  </section>
+
+  <!-- BIBLIOTECA -->
+  <section id="biblioteca">
+    <h2>Biblioteca de Estudos</h2>
+    <div class="library">
+      <div class="library-card">Resumo Matemática</div>
+      <div class="library-card">Mapa Mental História</div>
+      <div class="library-card">Exercícios Física</div>
+      <div class="library-card">Resumo Biologia</div>
+    </div>
+  </section>
+
+  <!-- COMUNIDADE -->
+  <section id="comunidade">
+    <h2>Comunidade</h2>
+    <p>Espaço para tirar dúvidas, compartilhar resumos e dicas com amigos.</p>
+  </section>
+
+</div>
+
+<script>
+  // ===== CADASTRO =====
+  function cadastrarAluno() {
+    const nome = document.getElementById('nome').value;
+    if(!nome) { alert("Preencha todos os campos!"); return; }
+    localStorage.setItem('aluno', JSON.stringify({
+      nome,
+      idade: document.getElementById('idade').value,
+      ano: document.getElementById('ano').value,
+      objetivo: document.getElementById('objetivo').value,
+      preferencia: document.getElementById('preferencia').value
+    }));
+    mostrarConteudo();
+  }
+
+  function mostrarConteudo() {
+    document.getElementById('cadastro').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  }
+
+  // ===== CHECAR SE JÁ ESTÁ CADASTRADO =====
+  window.onload = function() {
+    if(localStorage.getItem('aluno')) mostrarConteudo();
+    criarCalendario();
+    atualizarProgresso();
+  }
+
+  // ===== MENU =====
+  function abrirSecao(secao) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(secao).classList.add('active');
+  }
+
+  // ===== PROGRESSO =====
+  function atualizarProgresso() {
+    const horas = 5; // Exemplo fixo, pode ser editado
+    const meta = 10; // Meta semanal
+    document.getElementById('horas-estudo').innerText = horas;
+    const perc = Math.min((horas/meta)*100, 100);
+    document.getElementById('progress').style.width = perc + '%';
+    document.getElementById('progress').innerText = perc.toFixed(0) + '%';
+  }
+
+  // ===== CALENDÁRIO =====
+  function criarCalendario() {
+    const calendar = document.getElementById('calendar');
+    for(let i=1;i<=30;i++) {
+      const day = document.createElement('div');
+      day.classList.add('day');
+      day.innerText = i;
+      day.onclick = () => day.classList.toggle('selected');
+      calendar.appendChild(day);
+    }
+  }
+</script>
+
+</body>
+</html>
